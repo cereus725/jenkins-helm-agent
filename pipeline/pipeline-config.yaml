@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: hello-world
+  name: hello-world
+spec:
+  source:
+    git:
+      uri: "https://github.ibm.com/schopade/jenkins-agent-helm.git"
+    sourceSecret:
+      name: github-secret
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: pipeline/Jenkinsfile
+    type: JenkinsPipeline

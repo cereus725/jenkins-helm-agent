@@ -1,0 +1,35 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    slave-label: helm
+  name: jenkins-agent-helm
+  namespace: jenkins
+  labels:
+    role: jenkins-slave
+spec:
+  lookupPolicy:
+    local: false
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: jenkins-agent-helm
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'jenkins-agent-helm:latest'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'origin-jenkins-agent-base:v4.0'
+  source:
+    type: Git
+    git:
+      uri: 'https://github.ibm.com/schopade/jenkins-agent-helm.git'
+    sourceSecret:
+      name: github-secret

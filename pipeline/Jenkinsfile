@@ -1,0 +1,19 @@
+try {
+    timeout(time: 20, unit: 'MINUTES') {
+        node('helm') {
+			stage('Hello') {
+                openshift.withCluster() {
+                    openshift.withProject("jenkins") {   
+                      sh "helm list"
+					   
+                    }
+                }                
+            }
+        }
+    }
+
+} catch (err) {
+    echo "in catch block"
+    echo "Caught: ${err}"    
+    throw err
+}          
